@@ -1,13 +1,13 @@
 services:
   backstage:
-    image: backstage-app:latest # Nome da imagem do Backstage gerada pelo Dockerfile
+    image: backstage # Nome da imagem do Backstage gerada pelo Dockerfile
     build:
       context: . # Diretório onde está o Dockerfile
     ports:
-      - '7000:7000' # Porta externa mapeada para o serviço
+      - '3000:3000' # Porta externa mapeada para o serviço
     environment:
       NODE_ENV: production
-      PORT: 7000
+      PORT: 3000
       DATABASE_URL: postgres://backstage_user:password@db:5432/backstage # Configuração do banco de dados
     depends_on:
       - db
