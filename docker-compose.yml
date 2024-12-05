@@ -1,6 +1,6 @@
 services:
   backstage:
-    image: backstage # Nome da imagem do Backstage gerada pelo Dockerfile
+    image: backstage-app:latest # Nome da imagem do Backstage gerada pelo Dockerfile
     build:
       context: . # Diretório onde está o Dockerfile
     ports:
