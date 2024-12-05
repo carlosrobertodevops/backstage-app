@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   backstage:
     image: backstage-app:latest # Nome da imagem do Backstage gerada pelo Dockerfile
