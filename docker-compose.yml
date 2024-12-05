@@ -1,27 +1,30 @@
 services:
   backstage:
-    image: backstage-app:latest # Nome da imagem do Backstage gerada pelo Dockerfile
     build:
-      context: . # Diretório onde está o Dockerfile
+      context: .
     ports:
-      - '3000:3000' # Porta externa mapeada para o serviço
+      - '${PORT}:${PORT}'
+    env_file:
+      - .env
     environment:
-      NODE_ENV: production
-      PORT: 3000
-      DATABASE_URL: postgres://backstage_user:password@db:5432/backstage # Configuração do banco de dados
+      NODE_ENV: ${NODE_ENV}
+      PORT: ${PORT}
+      DATABASE_URL: ${DATABASE_URL}
     depends_on:
       - db
     networks:
       - backstage_network
 
   db:
-    image: postgres:15 # Versão do PostgreSQL
+    image: postgres:15
     container_name: backstage_db
     restart: always
+    env_file:
+      - .env
     environment:
-      POSTGRES_USER: backstage_user
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: backstage
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:

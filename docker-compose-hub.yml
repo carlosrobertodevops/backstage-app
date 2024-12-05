@@ -1,0 +1,30 @@
+services:
+  backstage:
+    image: tavopa7/backstage:latest
+    container_name: backstage
+    ports:
+      - '${PORT}:${PORT}' # Usando a variável do .env
+    env_file:
+      - .env
+    depends_on:
+      - db
+    networks:
+      - backstage_network
+
+  db:
+    image: postgres:15
+    container_name: backstage_db
+    restart: always
+    env_file:
+      - .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - backstage_network
+
+volumes:
+  postgres_data:
+
+networks:
+  backstage_network:
+    driver: bridge

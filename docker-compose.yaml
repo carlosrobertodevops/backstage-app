@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: backstage-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: backstage
+      POSTGRES_PASSWORD: backstage_password
+      POSTGRES_DB: backstage_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
+  backstage:
+    # image: backstage:latest # Troque pelo caminho da sua imagem se for customizada
+    # container_name: backstage-app
+    build:
+      context: .
+    container_name: backstage-app
+    depends_on:
+      - postgres
+    ports:
+      - '7007:7007'
+    environment:
+      APP_CONFIG_database__client: pg
+      APP_CONFIG_database__connection__host: postgres
+      APP_CONFIG_database__connection__port: 5432
+      APP_CONFIG_database__connection__user: backstage
+      APP_CONFIG_database__connection__password: backstage_password
+      APP_CONFIG_database__connection__database: backstage_db
+    volumes:
+      - ./app:/app
+    command: ['yarn', 'start-backend'] # Ou outro comando para iniciar o Backstage
+
+volumes:
+  postgres-data:
